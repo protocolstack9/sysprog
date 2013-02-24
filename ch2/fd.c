@@ -1,16 +1,28 @@
+/*
+ * 뭐하는 프로그램?
+ *   - fork로 자식 프로세스 생성 ; fork시 부모가 연 파일 디스크립터 공유
+ *   - open 시 각 모드에 따라 읽고 쓰는 위치와 권한이 다름을 확인
+ *   - fsync로 실제 디스크에 쓰는 명령 테스트
+ *
+ * 테스트 방법은?
+ *   gcc -o fd fd.c -Wall -Wextra
+ */
+
 #include <stdio.h>
 // exit()
 #include <stdlib.h>
 // fork(), fsync()
 #include <unistd.h>
+#include <errno.h>
 
-// open()
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
 
 /*
+ * unistd.h
 	STDIN_FILENO		0
 	STDOUT_FILENO		1
 	STDERR_FILENO		2
@@ -24,7 +36,7 @@ int main(void)
     int status;
 
 
-    fd = open("./fork.man", O_CREAT);
+    fd = open("./fd_fork", O_CREAT);
     if (fd < 0)
     {
         perror ("file open failed");
@@ -47,7 +59,7 @@ int main(void)
 		sleep (1);
 
 		/* O_APPEND를 붙이니 실제 쓰는 시점에 position을 파일 끝으로 이동시킨다 */
-		local_fd = open("./null.txt", O_RDWR | O_APPEND);
+		local_fd = open("./fd_null.txt", O_RDWR | O_APPEND);
 		if (local_fd < 0)
 		{
 			perror ("null file open failed");
@@ -72,7 +84,7 @@ int main(void)
 		/* O_CREAT로 파일을 생성할 때는 mode를 지정해 줘야 한다.
 			없다면 undefined behavior. 하지만 glibc에서는 umask 따라가나? */
 		/* O_TRUNC를 넣으니 실제 쓸 때 내용을 비운다 */
-        local_fd = open ("./null.txt", O_RDWR | O_CREAT | O_TRUNC , S_IRWXU );
+        local_fd = open ("./fd_null.txt", O_RDWR | O_CREAT | O_TRUNC , S_IRWXU );
 
         if (local_fd < 0)
 		{
@@ -84,12 +96,12 @@ int main(void)
 			sleep (3);
 			write (local_fd, "Hello, world!\n",  14);
 
-#if 0
-			if (fsync(local_fd) < 0)
+#if 1
+			if (fsync (local_fd) < 0)
 			{
 				if (errno == EINVAL)
 				{
-					if (datasync (local_fd) < 0)
+					if (fdatasync (local_fd) < 0)
 						perror ("fdatasync");
 				}
 				else
