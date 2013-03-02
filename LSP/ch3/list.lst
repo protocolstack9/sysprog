@@ -1,0 +1,25 @@
+fopen, fdopen, freopen
+fclose, fcloseall
+
+-- character, string --
+fgetc, fgets, getchar, getc, ungetc
+fputc, fputs, putchar, putc
+-- character, string --
+
+
+-- binary mode --
+fread
+fwrite
+-- binary mode --
+
+scanf,  fscanf,  sscanf
+printf, fprintf, sprintf
+
+
+fseek, ftell, rewind, fgetpos, fsetpos
+
+fflush, setbuf
+feof, clearerr, ferror, fileno
+
+
+
