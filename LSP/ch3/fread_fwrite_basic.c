@@ -18,8 +18,6 @@ int main (void)
 						 { 30, "julia", 150 } };
 	PERSON empty;
 
-	int i;
-
 
 	fp = fopen ("./fread_fwrite_basic.txt", "w+");
 	if (!fp) {

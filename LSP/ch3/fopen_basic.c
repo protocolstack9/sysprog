@@ -52,9 +52,10 @@ int main (void)
 		perror ("fp3 fputc");
 	}
 	rewind (fp3);
-	a = fgetc (fp3);
 
-	printf ("get character from fp3 '%d'\n", a);
+	while ((a = fgetc (fp3)) != EOF) {
+		printf ("get character from fp3 '%d' (%c)\n", a, a);
+	}
 
 
 
@@ -62,32 +63,26 @@ int main (void)
 
 	if (fp1 && 0 != fclose (fp1)) {
 		perror ("fp1 fclose");
-//		return (EXIT_FAILURE);
 	}
 
 	if (fp2 && 0 != fclose (fp2)) {
 		perror ("fp2 fclose");
-//		return (EXIT_FAILURE);
 	}
 
 	if (fp3 && 0 != fclose (fp3)) {
 		perror ("fp3 fclose");
-//		return (EXIT_FAILURE);
 	}
 
 	if (fp4 && 0 != fclose (fp4)) {
 		perror ("fp4 fclose");
-//		return (EXIT_FAILURE);
 	}
 
 	if (fp5 && 0 != fclose (fp5)) {
 		perror ("fp5 fclose");
-//		return (EXIT_FAILURE);
 	}
 
 	if (fp6 && 0 != fclose (fp6)) {
 		perror ("fp6 fclose");
-//		return (EXIT_FAILURE);
 	}
 
 	return (EXIT_SUCCESS);
