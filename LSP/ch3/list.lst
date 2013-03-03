@@ -21,5 +21,6 @@ fseek, ftell, rewind, fgetpos, fsetpos
 fflush, setbuf
 feof, clearerr, ferror, fileno
 
-
-
+flockfile
+funlockfile
+ftrylockfile
