@@ -1,0 +1,25 @@
+- what is process?
+  (from wikipedia) In computing, a process is an instance of a computer program that is being executed. It contains the program code and its current activity.
+
+  As object code in execution—active, alive, running programs—processes are more than just assembly language;
+    they consist of data, resources, state, and a virtualized computer.
+
+- what is process id?
+
+- process vs thread
+
+- parent / child
+
+int execl( const char *path, const char *arg, ...);
+int execlp( const char *file, const char *arg, ...);
+int execle( const char *path, const char *arg , ..., char * const envp[]);
+int execv( const char *path, char *const argv[]);
+int execvp( const char *file, char *const argv[]);
+
+  'l' : arguments are passed in list form
+  'v' : arguments are passed in vector(array) form
+
+  'p' : using $PATH environment
+  'e' : using new environment, be passed as envp
+
+- copy-on-write
