@@ -1,0 +1,2 @@
+tmpfile(3)
+mkstemp(3), mktemp(3), tempnam(3), tmpnam(3-never use)
