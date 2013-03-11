@@ -68,7 +68,7 @@ void __swap32() {}
 int main(void)
 {
 	int is_be = 0;
-	endian_check_t endian_ck = { 'l', '\0', '\0', 'b' };
+	endian_check_t endian_ck = { .ch = { 'l', '\0', '\0', 'b'} };
 
 
 	is_be = is_bigendian();
