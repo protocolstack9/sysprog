@@ -1,0 +1,29 @@
+
+;; Function main (main)
+
+Iterations: 0
+main ()
+{
+  char * p;
+  char s[5];
+  int D.2426;
+
+<bb 2>:
+  s = "ge12";
+  p_1 = strstr (&s, "ge");
+  # DEBUG p => p_1
+  if (p_1 != 0B)
+    goto <bb 3>;
+  else
+    goto <bb 4>;
+
+<bb 3>:
+  puts (p_1);
+
+<bb 4>:
+  D.2426_2 = 0;
+  return D.2426_2;
+
+}
+
+

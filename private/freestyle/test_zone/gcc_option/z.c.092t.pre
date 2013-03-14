@@ -1,0 +1,98 @@
+
+;; Function main (main) (executed once)
+
+Points-to analysis
+
+Constraints:
+
+ANYTHING = &ANYTHING
+READONLY = &READONLY
+ESCAPED = *ESCAPED
+ESCAPED = ESCAPED + UNKNOWN
+*ESCAPED = NONLOCAL
+NONLOCAL = &NONLOCAL
+NONLOCAL = &ESCAPED
+INTEGER = &ANYTHING
+s = READONLY
+CALLUSED = *CALLUSED
+CALLUSED = CALLUSED + UNKNOWN
+CALLUSED = &s
+CALLUSED = &READONLY
+p_1 = CALLUSED
+p_1 = NONLOCAL
+ESCAPED = p_1
+ESCAPED = &NULL
+
+Collapsing static cycles and doing variable substitution
+Building predecessor graph
+Detecting pointer and location equivalences
+Rewriting constraints and unifying variables
+Uniting pointer but not location equivalent variables
+Finding indirect cycles
+Solving graph
+
+Points-to sets
+
+ANYTHING = { ANYTHING }
+READONLY = { READONLY }
+ESCAPED = { NULL READONLY ESCAPED NONLOCAL s }
+NONLOCAL = { ESCAPED NONLOCAL }
+STOREDANYTHING = { }
+INTEGER = { ANYTHING }
+s = { READONLY ESCAPED NONLOCAL }
+CALLUSED = { READONLY ESCAPED NONLOCAL s }
+CALLCLOBBERED = { }
+p_1 = { READONLY ESCAPED NONLOCAL s }
+
+
+Alias information for main
+
+Aliased symbols
+
+s, UID D.2421, char[5], is addressable
+.MEM, UID D.2428, void, is global, default def: .MEM_3(D)
+
+Call clobber information
+
+ESCAPED, points-to non-local, points-to NULL, points-to vars: { s }
+
+Flow-insensitive points-to information
+
+p_1, points-to non-local, points-to escaped, points-to vars: { s }
+
+;; 1 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 5 3 4
+;; 2 succs { 3 5 }
+;; 5 succs { 4 }
+;; 3 succs { 4 }
+;; 4 succs { 1 }
+main ()
+{
+  char * p;
+  char s[5];
+
+<bb 2>:
+  s = "ge12";
+  p_1 = strstr (&s, "ge");
+  # DEBUG p => p_1
+  if (p_1 != 0B)
+    goto <bb 3>;
+  else
+    goto <bb 5>;
+
+<bb 5>:
+  goto <bb 4>;
+
+<bb 3>:
+  puts (p_1);
+
+<bb 4>:
+  return 0;
+
+}
+
+

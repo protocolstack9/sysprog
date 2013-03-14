@@ -1,0 +1,18 @@
+typedef enum {
+
+    read_vendor_name                        = 20, 
+
+} _SFP_MSA_ADDRESS;
+
+typedef enum {
+
+    read_diag_monitoring                    = 92, 
+    read_vendor_name                        = 148,
+
+} _XFP_MSA_ADDRESS;
+
+
+위 상황에서 typedef별로 name space가 생기지 않는다.
+typedef는 일반 identifier와 동일한 name space를 사용한다.
+
+enum은 같은 name space 안에 있을 때 identifier를 공유하는군?

@@ -1,0 +1,70 @@
+작성할 것
+strcpy
+strncpy
+
+       The strcpy() function copies the string pointed to by src, including the terminating null byte ('\0'), to the buffer pointed to by
+       dest.  The strings may not overlap, and the destination string dest must be large enough to receive the copy.
+
+       The strncpy() function is similar, except that at most n bytes of src are copied.  Warning: If there is no  null  byte  among  the
+       first n bytes of src, the string placed in dest will not be null-terminated.
+
+       If the length of src is less than n, strncpy() pads the remainder of dest with null bytes.
+
+       A simple implementation of strncpy() might be:
+
+           char*
+           strncpy(char *dest, const char *src, size_t n){
+               size_t i;
+
+               for (i = 0 ; i < n && src[i] != '\0' ; i++)
+                   dest[i] = src[i];
+               for ( ; i < n ; i++)
+                   dest[i] = '\0';
+
+               return dest;
+           }
+
+
+
+
+
+strcat
+strncat
+
+       The  strcat()  function  appends  the src string to the dest string, overwriting the null byte ('\0') at the end of dest, and then
+       adds a terminating null byte.  The strings may not overlap, and the dest string must have enough space for the result.
+
+       The strncat() function is similar, except that
+
+       *  it will use at most n characters from src; and
+
+       *  src does not need to be null-terminated if it contains n or more characters.
+
+       As with strcat(), the resulting string in dest is always null-terminated.
+
+       If src contains n or more characters, strncat() writes n+1 characters to dest (n from src plus the terminating null byte).  There‐
+       fore, the size of dest must be at least strlen(dest)+n+1.
+
+       A simple implementation of strncat() might be:
+
+           char*
+           strncat(char *dest, const char *src, size_t n)
+           {
+               size_t dest_len = strlen(dest);
+               size_t i;
+
+               for (i = 0 ; i < n && src[i] != '\0' ; i++)
+                   dest[dest_len + i] = src[i];
+               dest[dest_len + i] = '\0';
+
+               return dest;
+           }
+
+
+
+
+
+snprintf
+
+       The functions snprintf() and vsnprintf() write at most size bytes (including the trailing null byte ('\0')) to str.
+

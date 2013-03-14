@@ -1,0 +1,62 @@
+
+;; Function main (main) (executed once)
+
+;; 1 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 4
+;; 2 succs { 3 4 }
+;; 3 succs { 4 }
+;; 4 succs { 1 }
+
+SSA replacement table
+N_i -> { O_1 ... O_j } means that N_i replaces O_1, ..., O_j
+
+p_6 -> { p_1 }
+
+Number of virtual NEW -> OLD mappings:       0
+Number of real NEW -> OLD mappings:          1
+Number of total NEW -> OLD mappings:         1
+
+Number of virtual symbols: 0
+
+
+Incremental SSA update started at block: 2
+
+Number of blocks in CFG: 5
+Number of blocks to update: 2 ( 40%)
+
+
+
+
+Value ranges after VRP:
+
+p_1: VARYING
+p_6: ~[0B, 0B]  EQUIVALENCES: { p_1 } (1 elements)
+
+
+main ()
+{
+  char * p;
+  char s[5];
+
+<bb 2>:
+  s = "ge12";
+  p_1 = strstr (&s, "ge");
+  # DEBUG p => p_1
+  if (p_1 != 0B)
+    goto <bb 3>;
+  else
+    goto <bb 4>;
+
+<bb 3>:
+  puts (p_1);
+
+<bb 4>:
+  return 0;
+
+}
+
+

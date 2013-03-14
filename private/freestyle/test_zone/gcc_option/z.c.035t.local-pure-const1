@@ -1,0 +1,42 @@
+
+;; Function main (main) (executed once)
+
+
+
+ local analysis of main
+   scanning: s = "ge12";
+  scanning: p_1 = strstr (&s, "ge");
+  scanning: if (p_1 != 0B)
+  scanning: puts (p_1);
+  scanning: return 0;
+Function is locally looping.
+Function found to be nothrow: main
+main ()
+{
+  char * p;
+  char s[5];
+
+  # BLOCK 2 freq:10000
+  # PRED: ENTRY [100.0%]  (fallthru,exec)
+  s = "ge12";
+  p_1 = strstr (&s, "ge");
+  # DEBUG p => p_1
+  if (p_1 != 0B)
+    goto <bb 3>;
+  else
+    goto <bb 4>;
+  # SUCC: 3 [78.3%]  (true,exec) 4 [21.6%]  (false,exec)
+
+  # BLOCK 3 freq:7835
+  # PRED: 2 [78.3%]  (true,exec)
+  puts (p_1);
+  # SUCC: 4 [100.0%]  (fallthru,exec)
+
+  # BLOCK 4 freq:10000
+  # PRED: 2 [21.6%]  (false,exec) 3 [100.0%]  (fallthru,exec)
+  return 0;
+  # SUCC: EXIT [100.0%] 
+
+}
+
+

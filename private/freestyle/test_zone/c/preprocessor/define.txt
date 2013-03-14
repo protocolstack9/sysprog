@@ -1,0 +1,49 @@
+#A
+  심볼을 문자열로 만들기
+
+A ## B
+  AB 심볼로 만들기
+
+실행될 위치 안전하게 감싸기
+#define putnstr(str,n)  do {            \
+    printf ("%.*s", (int)n, str);   \
+} while (0)
+http://kernelnewbies.org/FAQ/DoWhile0
+http://gcc.gnu.org/onlinedocs/gcc/Statement-Exprs.html#Statement-Exprs
+
+가변 매개변수 더미 처리하기
+(주로 #ifdef 같이 조건을 검사해서...)
+#define dbg_summary(...) do {} while (0);
+
+
+자료구조에 접근해 데이터 가져오기 단순화
+#define HSDEVP_FROM_AP(ap)  (struct sata_dwc_device_port*)  \
+                (ap)->private_data
+
+
+배열 개수 구하기
+#define CTRL_LIST_SIZE (sizeof(ctlr_list) / sizeof(ctlr_list[0]))
+
+
+간단한 매크로 함수
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+
+
+indirect stringify
+#define str(x)	#x
+#define xstr(x) str(x)
+http://gcc.gnu.org/onlinedocs/cpp/Argument-Prescan.html
+
+
+echo "main() { return 0; }" | cpp -dM -
+http://gcc.gnu.org/onlinedocs/cpp/Predefined-Macros.html
+
+컴파일러가 gcc인지 검사해서, gcc라면 common macro 사용해서 ENDIAN 파악할 수 있을 것이다.
+그렇지 않다면 c소스로 runtime 체크하고.
+
+
+
+/*
+    매크로 함수 + function pointer
+    generate function macro
+ */

@@ -1,0 +1,30 @@
+OBJS        = pvrand_main.o pvrand.o
+SRCS        = $(OBJS:.o=.c)
+
+CC          = gcc
+CXX         = c++
+LD          = ld
+
+INC			=
+LIBS		=
+CFLAGS      = -O2 -Wall -Wextra -DNO_DEBUG
+CXXFLAGS    =
+LDFLAGS     =
+
+TARGET  = myrand
+
+.PHONY: all clean
+.SUFFIXES: .c .o
+
+
+
+all : $(TARGET)
+
+$(TARGET) : $(OBJS)
+	$(CC) -o $@ $(LDFLAGS) $(OBJS) $(LIBS)
+
+clean :
+	rm -rf $(OBJS) $(TARGET) core
+
+epath :
+	@echo $(PATH)

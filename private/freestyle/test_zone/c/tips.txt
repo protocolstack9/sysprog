@@ -1,0 +1,74 @@
+===========================
+compiler 종류 확인하는 방법
+===========================
+
+  - cpp에서 함수의 원형을 볼 때 유용한 __PRETTY_FUNCTION__은 gcc에서만 사용 가능.
+    ; 일반적으로 __PRETTY_FUNCTION__의 효과를 나타내기 위한 방법은?
+  - 더 나아가 버전까지 확인 가능한가? (일부 컴파일러에서 가능)
+  - autoconf나 automake선에서 해결하는 방법도 있나?
+
+    // Microsoft Visual C/C++ Compiler
+    #if defined( _MSC_VER )
+    # define MSVC ///< Microsoft Visual C/C++ Compiler
+    #endif
+
+    // GNU C/C++ Compiler
+    #if defined( __GNUC__ )
+    # define GNUC ///< GNU C/C++ Compiler
+    #endif
+
+    // Turbo C Compiler
+    #if defined( __TURBOC__ )
+    # define TURBOC ///< TURBO C Compiler
+    #endif
+
+
+    http://predef.sourceforge.net/precomp.html
+
+  [확인]
+    gcc -dM -E -v - < /dev/null  2>&1 | grep GNUC
+
+
+
+
+===========================
+platform 종류 확인하는 방법
+===========================
+
+  - Names the predefined ANSI C and Microsoft C++ implementation macros.
+    http://msdn.microsoft.com/en-us/library/b0084kay.aspx (VS 2010)
+    http://msdn.microsoft.com/en-us/library/b0084kay%28VS.80%29.aspx (VS 2005)
+
+    #ifdef _WIN32           ; Defined for application for Win32 and Win64. Always defined.
+    #ifdef _WIN64           ; Defined for application for win64.
+
+      * _WIN64 먼저 검사하고, _WIN32를 검사해야 64 bit에 대한 처리가 가능하다.
+
+      * in VSC++ platform.h
+        #if BUILD_PLATFORM == WINDOWS
+        #include "windows_platfrom.h"
+        #elif BUILD_PLATFORM == LINUX_BUILD
+        #else
+        #error UNSUPPORTED_PLATFORM
+        #endif
+
+  - http://wiki.kldp.org/HOWTO/html/GCC/GCC-HOWTO-4.html
+
+    #ifdef __linux__
+
+    gcc -dM -E -v - < /dev/null  2>&1 | grep "__linux__"
+
+
+
+
+===========================
+Debugging
+===========================
+    __func__
+    __LINE__
+    __FILE__
+    __PRETTY_FUNCTION__
+
+    #define debug( ... )            printf("%s\n", __VA_ARGS__);
+
+  - 자세한 내용은 debugging 디렉토리 참고

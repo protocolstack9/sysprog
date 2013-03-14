@@ -1,0 +1,42 @@
+1단계
+    - 배열, 포인터
+    - structure, union
+    - printf, scanf FORMAT string
+
+2단계
+    - debugging
+    - 가변인자 처리
+    - MACRO Function
+    - 비트 트릭
+
+3단계
+    - socket programming (byte ordering, crc)
+    - signal handling
+    - daemonize
+    - multi process/thread programming (동기화 포함)
+
+
+
+
+
+time(timer), timezone, locale 관련 함수
+
+setjmp, setlongjmp, sigsetjmp, sigsetlongjmp?
+
+strace, valgrind, Lint
+
+ElectricFence Library
+
+
+order of evaluation
+    어셈으로 펼쳐보는 것만이 능사는 아닙니다.
+    A(++i) + B(i++)라는 수식이 있을 때, 컴파일러가 어떤 기준으로 먼저 평가할 피연산자를 선택하는지 알 수 없기 때문입니다.
+    실제로, 컴파일러는 최적화를 위해 피연산자들의 평가 순서를 멋대로 바꾸기도 합니다.
+
+    The grouping of operators and operands is indicated by the syntax.
+    Except as specified later (for the function-call (), &&, ||, ?:, and comma operators),
+    the order of evaluation of subexpressions and the order in which side effects take place are both unspecified.
+
+    http://en.wikipedia.org/wiki/Sequence_point
+
+http://en.wikipedia.org/wiki/Operators_in_C_and_C++

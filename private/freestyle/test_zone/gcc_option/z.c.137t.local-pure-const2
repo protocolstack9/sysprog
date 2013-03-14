@@ -1,0 +1,12 @@
+
+;; Function main (main) (executed once)
+
+
+
+ local analysis of main
+   scanning: s = "ge12";
+  scanning: p_1 = strstr (&s, "ge");
+  scanning: if (p_1 != 0B)
+  scanning: puts (p_1);
+  scanning: return 0;
+Function is locally looping.
