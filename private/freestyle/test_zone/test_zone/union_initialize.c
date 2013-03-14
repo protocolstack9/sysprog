@@ -11,11 +11,5 @@ int main(void)
 
 	printf ("%c\n", (char)u.x);
 
-#if 0
-	for (i=0;i<5;i++) {
-		printf ("%d\n", i);
-		if (i==3) continue;
-	}
-#endif
 	return 0;
 }
