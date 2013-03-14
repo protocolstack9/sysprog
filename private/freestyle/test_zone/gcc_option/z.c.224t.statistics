@@ -1,7 +1,0 @@
-27 ccp "Constants propagated" "main" 1
-27 ccp "Statements deleted" "main" 1
-41 release_ssa "SSA names released" "main" 1
-72 vrp "Number of ASSERT_EXPR expressions inserted" "main" 1
-96 pre "compute_antic iterations == 1" "main" 1
-96 pre "insert iterations == 1" "main" 1
-127 vrp "Number of ASSERT_EXPR expressions inserted" "main" 1

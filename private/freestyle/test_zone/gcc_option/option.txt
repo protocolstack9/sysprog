@@ -1,0 +1,4 @@
+-O0 ; optimize
+
+-fdump-tree-all
+-save-temps
