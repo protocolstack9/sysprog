@@ -1,2 +1,24 @@
 timer 생성
   thread로 파일 전송하고 timer 만료될 때까지 응답 없으면 에러처리
+
+
+pid 파일 처리하는 방법, kill (pid에서 읽은 pid, 0)로 해당 pid가 살아 있는지 확인하는 방법
+  - ip guard source
+
+fork시 pending된 시그널이 날라간다.
+  - daemonize시에 호출했던 함수
+
+dhcp/dhtest/ip guard source
+zebos source
+dwdm/opas source
+
+
+linklist를 구현하자
+  -> sort도 넣고.
+
+ring buffer를 구현하자.
+
+netlink socket을 써보자.
+  proc 이용
+  sysfs 이용
+  ioctl 이용
