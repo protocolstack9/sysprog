@@ -36,7 +36,7 @@ The precision
 	 * %.N : precision. 정수에서는 최소 자리수, 문자열에서는 최대 길이 지정
 	 */
 	printf ("|%-6hu|\n", distance);
-	printf ("|%-10.10s|%-10.10s|\n", s, t);
+	printf ("|%-10.10s|%-10s|%-10.10s|\n", s, t, t);
 
 
 	/* union { char[] , int } - byte ordering issue */
