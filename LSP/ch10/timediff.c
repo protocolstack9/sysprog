@@ -26,8 +26,8 @@ clock1(void) {
 	unsigned long loc;
 
 
-	gettimeofday(&tv1, NULL);
-	printf("sec: %lu, msec: %lu\n", tv1.tv_sec, tv1.tv_usec);
+	gettimeofday (&tv1, NULL);
+	printf ("sec: %lu, msec: %lu\n", tv1.tv_sec, tv1.tv_usec);
 
 	while (RET < 1000000000) {
 		RET++;
@@ -35,17 +35,18 @@ clock1(void) {
 			printf(".");
 	}
 
-	gettimeofday(&tv2, NULL);
-	printf("sec: %lu, msec: %lu\n", tv2.tv_sec, tv2.tv_usec);
+	gettimeofday (&tv2, NULL);
+	printf ("sec: %lu, msec: %lu\n", tv2.tv_sec, tv2.tv_usec);
 
 	loc = timediff_in_ms (tv1, tv2);
-	printf("diff time is : %lu\n", loc);
+	printf ("time elapsed : %lu\n", loc);
 
 
 	return RET;
 }
 
-static unsigned long timediff_in_ms (struct timeval oval, struct timeval nval)
+static
+unsigned long timediff_in_ms (struct timeval oval, struct timeval nval)
 {
 	unsigned long loc;
 	struct timeval tv;

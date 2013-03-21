@@ -6,18 +6,25 @@ void print_buf (char *buf, int n);
 
 int main (void) {
 	char *s;
-	char buf[6] = { '0', '1', '2', '\0', '9', '9' };
+	char buf1[6] = { '1', '2', '3', '4', '0', '0' };
+	char buf2[6] = { '1', '2', '3', '4', '0', '0' };
 
-	// s = my_memmove (buf, buf+2, 4);
-	s = my_memmove (buf+2, buf, 4);
+	printf ("default stat\n");
+	print_buf (buf1, 6);
 
-	print_buf (buf, 6);
+	printf ("dst < src\n");
+	s = my_memmove (buf1, buf1+2, 4);
+	print_buf (buf1, 6);
+
+	printf ("dst > src\n");
+	s = my_memmove (buf2+2, buf2, 4);
+	print_buf (buf2, 6);
 
 	return 0;
 }
 
 void *my_memmove (void *dst, void *src, int n) {
-	int i;
+	int i, j;
 
 	if (n == 0)
 		return dst;
@@ -27,6 +34,17 @@ void *my_memmove (void *dst, void *src, int n) {
 	if (!dst || !src) {
 		return NULL;
 	}
+
+#if 0
+	for (i = 0; i < n; i++) {
+		if (dst >= src)
+			j = n - i - 1;
+		else
+			j = i;
+
+		((char *)dst)[j] = ((char *)src)[j];
+	}
+#else
 
 	if (dst >= src) {
 		for (i = n-1; i >= 0; i--) {
@@ -38,11 +56,12 @@ void *my_memmove (void *dst, void *src, int n) {
 			((char *)dst)[i] = ((char *)src)[i];
 		}
 	}
+#endif
 }
 
 void print_buf (char *buf, int n) {
 	int i;
 	for (i = 0; i < n; i++)
-		printf ("[%x]", buf[i]);
+		printf ("[%c]", (char)buf[i]);
 	printf ("\n");
 }
