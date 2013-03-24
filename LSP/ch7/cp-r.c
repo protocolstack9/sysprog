@@ -1,4 +1,4 @@
-#if 0
+/*
  $ gcc -o cp-r cp-r.c -DNO_DEBUG
 
   src
@@ -23,7 +23,20 @@
     x
     `-- a
         `-- a.txt   <- exist
-#endif
+
+
+  TODO:
+  다음 case들을 고려해야 한다.
+
+  $ cp -R ../../LSP/ch10 ../ch10
+  cp: cannot copy a directory, `../../LSP/ch10', into itself, `../ch10/ch10'
+  $ cp -R ../ch10 .
+  $ cp -R ../ch10/ .			<- 에러 발생하면 안 됨
+  $ cp -R ../ch10 ../../ch10
+
+  chdir&getcwd&chdir back?  파일일 경우에는?
+  basename/dirname?
+*/
 
 
 #include <stdio.h>
@@ -267,9 +280,7 @@ mycp (const char *src, const char *dst)
 			int fd;
 			if ((fd = creat (dst, src_st.st_mode)) < 0) {
 				fprintf (stderr, "dst file create error\n");
-				if (close (fd) < 0) {
-					return -1;
-				}
+				return -1;
 			}
 			if (close (fd) < 0) {
 				return -1;
