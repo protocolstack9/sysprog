@@ -5,23 +5,24 @@
 	   int pclose(FILE *stream);
 #endif
 
-
 int main (void)
 {
-	FILE *fp = popen ("cat > test.txt", "w");
+	FILE *fp;
+	char buf[BUFSIZ] = { 0, };
+	int cnt;
 
+	fp = popen ("ps aux | grep freestyle", "r");
 	if (!fp) {
 		perror ("popen");
-		return -1;
 	}
 
-	fprintf (fp, "hello, world!\n");
+	cnt = fread (buf, 1, BUFSIZ, fp);
+
+	pclose (fp);
 
 
-	if (pclose (fp) < 0) {
-		perror ("pclose");
-		return -1;
-	}
+	printf ("%s\n", buf);
+
 
 
 	return 0;
