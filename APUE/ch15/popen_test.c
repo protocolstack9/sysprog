@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <unistd.h>
+
 
 #if 0
        FILE *popen(const char *command, const char *type);
@@ -11,17 +13,21 @@ int main (void)
 	char buf[BUFSIZ] = { 0, };
 	int cnt;
 
-	fp = popen ("ps aux | grep freestyle", "r");
+	fp = popen ("sleep 1; ps aux | grep freestyle", "r");
 	if (!fp) {
 		perror ("popen");
 	}
 
 	cnt = fread (buf, 1, BUFSIZ, fp);
 
+	printf (" pid [%d]\n%s\n", getpid (), buf);
+	fflush (stdout);
+
+
+	while (1)
+		sleep (5);
+
 	pclose (fp);
-
-
-	printf ("%s\n", buf);
 
 
 
