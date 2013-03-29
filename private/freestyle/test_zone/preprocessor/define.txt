@@ -47,3 +47,20 @@ http://gcc.gnu.org/onlinedocs/cpp/Predefined-Macros.html
     매크로 함수 + function pointer
     generate function macro
  */
+
+
+
+
+#if, #if defined(HAVE_DHCP), #if !defined (HAVE_DHCP), #if 1, #if 0
+#if defined (HAVE_DHCP) && defined (HAVE_ARP), #if defined (HAVE_DHCP) || defined (HAVE_ARP)
+#else
+#elif
+#endif
+
+#ifdef HAVE_ARP
+#ifndef HAVE_DHCP
+
+#define
+#undef
+
+#
