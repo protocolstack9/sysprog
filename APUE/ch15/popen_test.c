@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 
+FILE *my_popen(const char *command, const char *type);
 #if 0
        FILE *popen(const char *command, const char *type);
 	   int pclose(FILE *stream);
@@ -13,23 +15,95 @@ int main (void)
 	char buf[BUFSIZ] = { 0, };
 	int cnt;
 
-	fp = popen ("sleep 1; ps aux | grep freestyle", "r");
+//	fp = my_popen ("sleep 1; ps aux | grep freestyle", "r");
+	fp = my_popen ("cat > hello.txt", "w");
 	if (!fp) {
 		perror ("popen");
 	}
 
-	cnt = fread (buf, 1, BUFSIZ, fp);
+//	cnt = fread (buf, 1, BUFSIZ, fp);
+	cnt = fwrite ("Hello, world!\n", 1, 14, fp);
 
 	printf (" pid [%d]\n%s\n", getpid (), buf);
 	fflush (stdout);
 
 
+#if 0
 	while (1)
 		sleep (5);
+#endif
 
 	pclose (fp);
 
 
 
 	return 0;
+}
+
+
+
+
+#define READ		0
+#define WRITE		1
+
+FILE *my_popen(const char *command, const char *type)
+{
+	FILE *fp;
+	int fd;
+
+	int pp[2];
+	int local_type;
+
+
+	if (pipe (pp) < 0) {
+		perror ("pipe pp");
+		return NULL;
+	}
+
+	if (*type == 'r')
+		local_type = READ;
+	else if (*type == 'w')
+		local_type = WRITE;
+	else
+		local_type = -1;
+
+
+	/* error */
+	if ((fd = fork ()) < 0) {
+		perror ("fork");
+		return NULL;
+	}
+	/* parent */
+	else if (fd > 0) {
+		if (local_type == READ) {
+			close (pp[1]);
+			fp = fdopen (pp[0], "r");
+		}
+		else if (local_type == WRITE) {
+			close (pp[0]);
+			fp = fdopen (pp[1], "w");
+		}
+		else {
+		}
+	}
+	/* child */
+	else {
+		if (local_type == READ) {
+			close (pp[0]);
+			dup2 (pp[1], 1);
+		}
+		else if (local_type == WRITE) {
+			close (pp[1]);
+			dup2 (pp[0], 0);
+		}
+		else {
+		}
+
+		execl ("/bin/sh", "sh", "-c", command, NULL);
+
+		exit (0);
+	}
+
+
+	return fp;
 }
