@@ -9,7 +9,7 @@
 
 void handler (int signo)
 {
-	printf ("[%d] alarm\n", getpid ());
+	printf ("\t\t[%d] alarm\n", getpid ());
 	alarm (3);
 }
 
@@ -44,21 +44,23 @@ int main(void)
 		perror ("fork");
 		return -1;
 	}
+	/* child */
 	else if (fd == 0) {
 		int i = 0;
 //		alarm (3);
 		while ( 1 ) {
 			if (i % 99999999 == 0) {
-				printf ("child\n");
+				printf ("child [%d]\n", getpid ());
 			}
 			i++;
 		}
 	}
+	/* parent */
 	else {
 		int i = 0;
 		while ( 1 ) {
 			if (i % 99999999 == 0) {
-				printf ("parent\n");
+				printf ("parent[%d]\n", getpid ());
 			}
 			i++;
 		}
