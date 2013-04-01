@@ -11,6 +11,7 @@ int main (void)
 
 	fd = open ("/tmp/myfifo", O_WRONLY);
 
+	/* if fifo does not exist, make it */
 	if (fd < 0 && errno == ENOENT) {
 		printf ("make fifo.\n");
 		if (mkfifo ("/tmp/myfifo", S_IRUSR | S_IWUSR) < 0) {

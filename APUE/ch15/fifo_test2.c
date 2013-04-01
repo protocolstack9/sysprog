@@ -9,6 +9,7 @@ int main (void)
 	int fd;
 	char buf[BUFSIZ] = { 0, };
 
+	/* fifo_test.c call mkfifo() to make myfifo */
 	fd = open ("/tmp/myfifo", O_RDONLY);
 	if (fd < 0) {
 		perror ("open");
