@@ -1,0 +1,49 @@
+  * ipc 
+    o socket
+	o shared memory
+	o message queue
+	o pipe/fifo
+	o semaphore (synchronization)
+
+    o mmap
+	o file
+	o signal + payload
+
+
+  * posix ipc manpages (compile with realtime library. -lrt)
+    o man 7 sem_overview
+	o man 7 shm_overview
+	o man 7 mq_overview
+
+
+  * ipc : SysV       vs         POSIX
+
+    o One marked difference between the System V and POSIX semaphore implementations is that in System V
+      you can control how much the semaphore count can be increased or decreased;
+      whereas in POSIX, the semaphore count is increased and decreased by 1.
+
+    o POSIX semaphores do not allow manipulation of semaphore permissions,
+      whereas System V semaphores allow you to change the permissions of semaphores to a subset of the original permission.
+
+    o Initialization and creation of semaphores is atomic (from the user's perspective) in POSIX semaphores.
+
+    o From a usage perspective, System V semaphores are clumsy, while POSIX semaphores are straight-forward
+
+    o The scalability of POSIX semaphores (using unnamed semaphores) is much higher than System V semaphores.
+	  In a user/client scenario, where each user creates her own instances of a server, it would be better to use POSIX semaphores.
+
+    o System V semaphores, when creating a semaphore object, creates an array of semaphores whereas POSIX semaphores create just one.
+	  Because of this feature, semaphore creation (memory footprint-wise) is costlier in System V semaphores when compared to POSIX semaphores.
+
+    o It has been said that POSIX semaphore performance is better than System V-based semaphores.
+
+    o POSIX semaphores provide a mechanism for process-wide semaphores rather than system-wide semaphores.
+	  So, if a developer forgets to close the semaphore, on process exit the semaphore is cleaned up.
+	  In simple terms, POSIX semaphores provide a mechanism for non-persistent semaphores.
+
+
+  * ipc tool : ipcs, ipcrm, ipcmk
+
+
+
+  * unp를 보면 mmap으로 shared memory를 구현하고 있다.
