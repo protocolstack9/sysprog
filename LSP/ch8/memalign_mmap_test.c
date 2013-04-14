@@ -27,7 +27,7 @@ int main (void) {
 	}
 
 	printf ("%p\n", buf);
-	memcpy (buf, "hello, world!\n", sizeof ("hello, world!\n"));
+	memcpy (buf, "hello, world!", 13);
 
 
 	/*
@@ -35,18 +35,16 @@ int main (void) {
 	 */
 	/* void * mmap(void *start, size_t length, int prot , int flags, int fd, off_t offset); */
 	p = mmap (NULL, 512 * 1024 , PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON ,  -1, 0);
-	if (p == MAP_FAILED)
+	if (p == MAP_FAILED) {
+		free (buf);
 		perror ("mmap");
-	else
-		memcpy (p, buf, 1024);
+		return -1;
+	}
+
+	memcpy (p, buf, 1024);
+	free (buf);
 
 	printf ("%s\n", p);
-
-
-	sleep (15);
-
-
-	free (buf);
 
 	/*
 	 * munmap

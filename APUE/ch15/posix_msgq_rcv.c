@@ -37,7 +37,7 @@ int main (void)
 		memset (buf, 0x00, len);
 
 		if ((len =  mq_receive (mq, buf, BUFSIZ, 0)) < 0) {
-			return err_and_ret ("mq_send");
+			return err_and_ret ("mq_receive");
 		}
 
 		if (!strcmp (buf, "end\n"))

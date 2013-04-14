@@ -30,7 +30,7 @@ int main (void)
 
 	while (1)
 	{
-		/* message operation - send */
+		/* message operation - recv */
 		ret = msgrcv (msgid, &pack_data, sizeof(pack_t) - sizeof(long), MSG_DATA, 0);
 		if (-1 == ret)
 		{

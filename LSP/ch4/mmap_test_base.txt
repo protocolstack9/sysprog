@@ -1,4 +1,4 @@
-AAN(1)									       Manual pager utils									 MAN(1)
+MAN(1)									       Manual pager utils									 MAN(1)
 
 
 
