@@ -1,0 +1,7 @@
+$ gcc -fPIC -c plus.c
+$ gcc -fPIC -c minus.c
+$ gcc -shared -o libplusminus.so plus.o minus.o
+$ sudo mv libplusminus.so /lib
+$ sudo ldconfig
+$ gcc -lplusminus ex.c
+$ ./a.out
