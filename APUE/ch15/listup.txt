@@ -1,20 +1,4 @@
-system v semaphore
-   semget, semop, semctl
-   #include <sys/sem.h>
-
-posix semaphore
-   sem_init, sem_post, sem_wait, sem_overview(7)
-   #include <semaphore.h>
-
-
-* what is differences between system v semaphore and posix semaphore?
-http://stackoverflow.com/questions/368322/differences-between-system-v-and-posix-semaphores
-
-$ ipcs -a
-
-
-
-  * ipc 
+  * various type of IPC
     o socket
 	o shared memory
 	o message queue
@@ -26,13 +10,11 @@ $ ipcs -a
 	o signal + payload
 
 
-  * posix ipc manpages (compile with realtime library. -lrt)
-    o man 7 sem_overview
-	o man 7 shm_overview
-	o man 7 mq_overview
+  * System V       vs       POSIX
 
 
-  * ipc : SysV       vs         POSIX
+    what is differences between system v semaphore and posix semaphore?
+      http://stackoverflow.com/questions/368322/differences-between-system-v-and-posix-semaphores
 
     o One marked difference between the System V and POSIX semaphore implementations is that in System V
       you can control how much the semaphore count can be increased or decreased;
@@ -61,5 +43,96 @@ $ ipcs -a
   * ipc tool : ipcs, ipcrm, ipcmk
 
 
+
+  1. Shared Memory
+    - man 7 shm_overview
+	  process 간에 공유 메모리로 정보를 공유하기 위한 ipc 도구.
+
+    - int shm_open(const char *name, int oflag, mode_t mode);
+      @ '/somename' 형식의 name을 identifier 삼아 객체를 생성하고 file descriptor를 반환.
+      @ oflag는 읽기/쓰기, 생성 등의 속성을 지정하고, mode는 user, group, other의 퍼미션을 지정한다.
+      @ 최초 크기는 0이므로 ftruncate로 원하는 크기만큼 변경
+      @ 이후 mmap으로 address space에 mapping시켜 사용하는 것이 일반적임
+
+    - int shm_unlink(const char *name);
+      @ 사용이 끝난 shared memory object의 삭제 (실제 삭제는 모든 process가 unlink 호출하였을 경우)
+
+  2. Message Queue
+    - man 7 mq_overview
+	  process 간에 선입 선출 방식으로 message를 교환하기 위한 ipc 도구.
+
+    - system v : msgget(2), msgsnd(2), msgrcv(2)
+	             #include <sys/types.h>
+		         #include <sys/ipc.h>
+				 #include <sys/msg.h>
+
+      posix    : mq_open(3), mq_receive(3), mq_send(3), mq_close(3), mq_unlink(3), ...
+	             #include <fcntl.h>           /* For O_* constants */
+			     #include <sys/stat.h>        /* For mode constants */
+				 #include <mqueue.h>
+
+	- mqd_t mq_open(const char *name, int oflag);
+	  mqd_t mq_open(const char *name, int oflag, mode_t mode, struct mq_attr *attr);
+	  @ '/somename' 형식의 name을 identifier 삼아 객체를 생성하고 mqd_t를 반환.
+      @ oflag는 읽기/쓰기, 생성 등의 속성을 지정하고, mode는 user, group, other의 퍼미션을 지정한다.
+	    oflag에 O_CREAT 속성이 있다면 mode와 attr도 제공해야 한다. attr은 mq_getattr(3)을 통해 읽을 수 있다.
+
+    - ssize_t mq_receive(mqd_t mqdes, char *msg_ptr, size_t msg_len, unsigned *msg_prio);
+	  @ mq_open에서 반환한 mqd_t에서 높은 우선 순위를 가진 message 중 오래된 메시지부터 가져와 msg_ptr가 가리키는 버퍼에 저장한다.
+	  @ msg_len은 버퍼의 크기를 지정하는데, mq_msgsize보다 커야 한다.
+	  @ msg_prio가 NULL이 아니라면 수신된 message의 priority가 저장된다.
+	  @ 반환값은 수신한 message의 크기이다.
+	  @ 수신할 message가 없을 경우 기본 동작은 block이다.
+
+	- int mq_send(mqd_t mqdes, const char *msg_ptr, size_t msg_len, unsigned msg_prio);
+	  @ mq_open에서 반환한 mqd_t에 msg_ptr이 가리키는 버퍼의 내용을 message로 전달한다.
+	  @ msg_len은 message의 크기를 지정하는데, 0 ~ mq_msgsize까지 가능하다.
+	  @ msg_prio는 우선순위를 지정한다. 같은 우선순위일 경우 새로 들어온 message는 이전의 message 다음에 위치한다.
+	  @ queue가 꽉 차 있을 경우 기본 동작은 block이다.
+
+  3. Semaphore
+    - man 7 sem_overview
+	  process 또는 thread 간의 동기화를 위한 ipc 도구. semaphore가 잠겨 있는 상태에서 획득을 시도하는 process는 sleep 상태로 대기한다.
+
+    - named  vs  unnamed
+	  @ named   : '/somename' 형식으로 식별되는 semaphore 객체. 다른 ipc와 유사한 형태이다.
+	  @ unnamed : message-based semaphore.
+	              thread 간의 semaphore는 전역 변수 공간에 semaphore 변수를 둠으로써 공유 가능하고,
+				  process 간에는 shared memory나 mmap으로 공유되는 공간에 변수를 둠으로써 공유 가능하다.
+
+    - system v : semget(2), semop(2), semctl(2)
+                 #include <sys/sem.h>
+
+      posix    : unnamed : sem_init(3), sem_post(3), sem_wait(3), sem_destroy(3)
+                 named   : sem_open(3), sem_post(3), sem_wait(3), sem_close(3), sem_unlink(3)
+                 #include <semaphore.h>
+
+	- int sem_init(sem_t *sem, int pshared, unsigned int value);
+	  @ sem이 가리키는 unnamed semaphore를 초기화.
+	  @ pshared는 thread 간의 공유시 0, process 간의 공유시에는 0이 아닌 값을 지정.
+	  @ value는 semaphore의 초기값으로, binary semaphore (mutex 같은 동작)을 위해서는 1을 지정.
+	  
+	- int sem_destroy(sem_t *sem);
+	  @ sem_init으로 초기화된 unnamed semaphore를 삭제.
+
+	- sem_t *sem_open(const char *name, int oflag);
+	  sem_t *sem_open(const char *name, int oflag, mode_t mode, unsigned int value);
+	  @ '/somename'으로 named semaphore를 생성.
+      @ oflag는 읽기/쓰기, 생성 등의 속성을 지정하고, mode는 user, group, other의 퍼미션을 지정한다.
+	    oflag에 O_CREAT 속성이 있다면 mode와 value도 지정해야 한다. value는 semaphore 초기값이다.
+
+    - int sem_post(sem_t *sem);
+      @ semaphore의 값을 하나 증가시키고, 대기 중인 다른 프로세스(스레드)를 깨운다.
+
+	- int sem_wait(sem_t *sem);
+	  @ semaphore의 값이 1 이상이면 값을 하나 감소시키고 계속 진행하고, 0이면 블럭 상태로 sem_post나 signal이 도착할 때까지 대기한다.
+
+    - int sem_close(sem_t *sem);
+	  @ sem_open에서 반환한 named semaphore의 식별자를 전달받아 닫는다.
+
+	- int sem_unlink(const char *name);
+	  @ name으로 식별되는 named semaphore를 삭제. sem_open으로 semaphore를 열었던 모든 프로세스들이 sem_close 한 뒤에 삭제된다.
+
+  4. Mutex
 
   * unp를 보면 mmap으로 shared memory를 구현하고 있다.

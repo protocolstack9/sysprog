@@ -1,0 +1,2 @@
+ioctl
+	SIOCGLIFCONF ; 인터페이스들의 상태를 읽을 수 있다. dhcp daemon 참고
